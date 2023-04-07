@@ -2,5 +2,5 @@
 
 public interface IStringSearcher
 {
-    int Search(string haystack, string needle);
+    int Search(string text, string word);
 }

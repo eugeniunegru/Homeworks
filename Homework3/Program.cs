@@ -7,125 +7,7 @@ namespace Homework
 {
     class Homework
 {
-        class Ex1
-        {
-            string text;
-            string path = "text.txt";
-            string url = "https://www.gutenberg.org/cache/epub/70424/pg70424.txt";
-            FileStream file;
-            HttpClient httpClient;
-           public Ex1()
-            {
-                text = "";
-            }
-            Ex1(string text, string path, string url)
-            {
-                this.text = text;
-                this.path = path;
-                this.url = url;
-            }
-            public async Task FetchText()
-            {
-                if (File.Exists(path))
-                {
-                    file = File.OpenRead(path);
-                    
-                        byte[] b = new byte[1024];
-                        UTF7Encoding temp = new UTF7Encoding(true);
-                        int readLen;
-                        while ((readLen = file.Read(b, 0, b.Length)) > 0)
-                        {
-                            
-                        this.text+=temp.GetString(b, 0, readLen) + "\n";
-                        }
-                   
-                    //File.Delete(path);
-                }
-                else
-                {
-                   
-                    file = File.Create(this.path);
-                    try
-                    {
-                        httpClient = new HttpClient();
-                        using HttpResponseMessage response = await this.httpClient.GetAsync(this.url);
-                        
-                        response.EnsureSuccessStatusCode();
-                        
-
-                        string responseBody = await response.Content.ReadAsStringAsync();
-                        AddText(file, responseBody);
-                        this.text = responseBody;
-                        
-                    }
-                    catch (HttpRequestException e)
-                    {
-                        Console.WriteLine("\nException Caught!");
-                        Console.WriteLine("Message :{0} ", e.Message);
-                    }
-                }
-                file.Close();
-            }
-            private static void AddText(FileStream fs, string value)
-            {
-                byte[] info = new UTF7Encoding(true).GetBytes(value);
-                fs.Write(info, 0, info.Length);
-            }
-            public string Text
-            {
-                get { return this.text; }
-                set { text = value; }
-            }
-
-        }
-        public static int[] SearchString(string str, string pat)
-        {
-            List<int> retVal = new List<int>();
-            int m = pat.Length;
-            int n = str.Length;
-
-            int[] badChar = new int[512];
-
-            BadCharHeuristic(pat, m, ref badChar);
-            int s = 0;
-            while (s <= (n - m))
-            {
-                int j = m - 1;
-
-                while (j >= 0 && pat[j] == str[s + j])
-                    --j;
-                if (j < 0)
-                {
-                    retVal.Add(s);
-                    s += (s + m < n) ? m - badChar[str[s + m]] : 1;
-                }
-                else
-                {
-                    s += Math.Max(1, j - badChar[str[s + j]]);
-                }
-            }
-
-            return retVal.ToArray();
-        }
-
-        private static void BadCharHeuristic(string str, int size, ref int[] badChar)
-        {
-            int i;
-
-            for (i = 0; i < 512; i++)
-                badChar[i] = -1;
-
-            for (i = 0; i < size; i++)
-                badChar[(int)str[i]] = i;
-        }
-        static StringBuilder gen50Thus()
-        {
-            StringBuilder text=new StringBuilder("");
-            for (int i = 1; i <= 50000; i++)
-                text.Append('a');
-            
-            return text;
-        }
+      
         static int test1(string str,string pat)
         {
             var watch = new System.Diagnostics.Stopwatch();
@@ -203,9 +85,7 @@ namespace Homework
             
             Console.WriteLine("Test 2 after 50");
 
-            string text1 = "";
-
-            text1 = gen50Thus().Append('b').ToString();
+            ----------------------------------------------------------------------------------------------------------
 
             Console.WriteLine($"Execution Time for Boyer–Moore: {test1(text1, "b")} ms");
 
@@ -213,9 +93,7 @@ namespace Homework
 
             Console.WriteLine("Test 3 between 50");
 
-            string text2 = text1;
-
-            text2 += gen50Thus();
+            ----------------------------------------------------------------------------------------------------------
 
             Console.WriteLine($"Execution Time for Boyer–Moore: {test1(text2, "b")} ms");
 
